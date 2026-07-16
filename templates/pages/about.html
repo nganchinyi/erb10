@@ -1,4 +1,5 @@
 {% extends "base.html"%}
+{% load static %}
 {% block content %}
 
 <!-- Showcase -->
@@ -16,9 +17,10 @@
     <section id="bc" class="mt-3">
       <div class="container">
         <nav aria-label="breadcrumb">
+          
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href="index.html" class="text-danger"><i class="fas fa-home"></i> Home</a>
+              <a href={% url "pages:index" %} class="text-danger"><i class="fas fa-home"></i> Home</a>
             </li>
             <li class="breadcrumb-item active">About</li>
           </ol>
@@ -34,13 +36,14 @@
             <p class="lead mb-4">
               Food Agent brings together restaurant discovery, curated recommendations, and neighborhood favorites in one place.
             </p>
-            <img src="assets/img/about.jpg" alt="Restaurant discovery" class="img-fluid mb-4" />
+            <img src={% static "img/about.jpg" %} alt="Restaurant discovery" class="img-fluid mb-4" />
             <p class="mb-0">
               Whether you are looking for a casual bite, a fine dining experience, or a quick delivery option, Food Agent makes it easy to browse restaurants by district, cuisine, price, and availability.
             </p>
           </div>
           <div class="col-md-4 mt-4 mt-md-0">
             <div class="card shadow-sm">
+              {% comment %}  {% endcomment %}
               <img class="card-img-top" src="assets/img/staffs/kyle.jpg" alt="Food curator" />
               <div class="card-body">
                 <h5 class="card-title mb-2">Featured Curator</h5>
@@ -59,6 +62,7 @@
       <h2 class="display-4">We Work For Your Taste</h2>
       <h4>From local gems to trending dining spots, we make restaurant discovery simple and enjoyable.</h4>
       <hr />
+      {% comment %}  {% endcomment %}
       <a href="listings.html" class="btn btn-danger text-white btn-lg">View Featured Restaurants</a>
     </section>
     <!-- team -->
@@ -67,6 +71,7 @@
         <h2 class="text-center">Our Food Team</h2>
         <div class="row text-center">
           <div class="col-md-4">
+            {% comment %}  {% endcomment %}
             <img src="assets/img/staffs/kyle.jpg" alt="Kyle" class="rounded-circle mb-3" />
             <h4>Kyle Chan</h4>
             <p class="text-danger"><i class="fas fa-utensils"></i> Food Curator</p>
@@ -75,6 +80,7 @@
             <p><i class="fas fa-envelope-open"></i> kyle@foodagent.co</p>
           </div>
           <div class="col-md-4">
+            {% comment %}  {% endcomment %}
             <img src="assets/img/staffs/mark.jpg" alt="Mark" class="rounded-circle mb-3" />
             <h4>Mark Lee</h4>
             <p class="text-danger">Dining Guide</p>
@@ -83,6 +89,7 @@
             <p><i class="fas fa-envelope-open"></i> mark@foodagent.co</p>
           </div>
           <div class="col-md-4">
+            {% comment %}  {% endcomment %}
             <img src="assets/img/staffs/jenny.jpg" alt="Jenny" class="rounded-circle mb-3" />
             <h4>Jenny Cheung</h4>
             <p class="text-danger">Restaurant Reviewer</p>
