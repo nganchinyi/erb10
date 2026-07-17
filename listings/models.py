@@ -8,7 +8,7 @@ class Listing(models.Model):
     district=models.CharField(max_length=50)
     choices=models.CharField(max_length=50)
     description=models.TextField(blank=True)
-    service=models.IntegerField(max_length=50)
+    service=models.IntegerField()
     room_type=models.CharField(max_length=50)
     network=models.BooleanField(default=True)
     delivery=models.BooleanField(default=True)
