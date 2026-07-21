@@ -6,15 +6,20 @@ class Listing(models.Model):
     title=models.CharField(max_length=200)
     address=models.CharField(max_length=200)
     district=models.CharField(max_length=50)
-    choices=models.CharField(max_length=50)
+    cuisine_choices=models.CharField(max_length=50) # cuisine_choices
     description=models.TextField(blank=True)
-    service=models.IntegerField()
+    specialty=models.IntegerField() # specialty
     room_type=models.CharField(max_length=50)
-    network=models.BooleanField(default=True)
-    delivery=models.BooleanField(default=True)
-    rating=models.FloatField()
-    hours=models.TimeField()
+    has_wifi=models.BooleanField(default=True) # has_wifi
+    has_delivery=models.BooleanField(default=True) # has_delivery
+    rating=models.FloatField(default = 0.0) # add default value
+    opening_hours=models.TimeField()  #opening_hours
     price=models.IntegerField()
+    promo_badge_text = models.CharField(max_length=100, blank=True, null=True)
+    accepts_reservations = models.BooleanField(default=False)
+    ambiance_note = models.CharField(max_length=100, blank=True)
+    contant_number = models.CharField(max_length=20, blank=True)
+
     photo_main=models.ImageField(upload_to='photos/%Y/%m/%d/')
     photo_1 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
     photo_2 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
@@ -27,7 +32,7 @@ class Listing(models.Model):
     
 
     class Meta:
-        ordering= ['list_date']
+        ordering= ['-list_date']
         indexes = [models.Index(fields=['list_date'])]
 
     def __str__(self):

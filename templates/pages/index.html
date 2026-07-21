@@ -1,5 +1,7 @@
 {% extends "base.html"%}
+{% load humanize %}
 {% block content %}
+
 <!-- Showcase -->
     <section id="showcase">
       <div class="container text-center">
@@ -86,121 +88,68 @@
         <h3 class="text-center m-5">Featured Restaurants</h3>
         <div class="row">
         <!-- Listing 1 -->
+        {% if listings %}
+        {% for listing in listings %}
         <div class="col-md-6 col-lg-4 mb-4">
-        <div class="card listing-preview">
-            <img src="assets/img/homes/home-1.jpg" class="card-img-top" alt="restaurant" />
+        <div class="card listing-preview">   
+            <img src={{listing.photo_main.url}} class="card-img-top" alt="restaurant" />
             <div class="card-img-overlay">
             <h2>
                 <span class="badge badge-danger text-white"
-                >$Late Night Discount</span>
-            </h2>
-            </div>
-            <div class="card-body">
-                <div class="listing-heading text-center">
-            <h4 class="text-danger">Sushi House</h4>
-            <span class="badge badge-cuisine">Japanese</span>
-            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> Central District</p>
+                >
+                {{listing.promo_badge_text | title}}</span>
+                      </h2>
+                    </div>
+                        <div class="card-body">
+                      <div class="listing-heading text-center">
+                    <h4 class="text-danger">{{listing.title | title}}</h4>
+            <span class="badge badge-cuisine">
+              {{listing.cuisine_choices | title}}</span>
+            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> {{listing.district | title}}</p>
             </div>
             <hr />
             <div class="row py-2 text-secondary">
-                <div class="col-6"><i class="fas fa-utensils"></i> Japanese</div>
-                <div class="col-6"><i class="fas fa-dollar-sign"></i>500/person</div>
+                <div class="col-6"><i class="fas fa-utensils"></i> 
+                  {% comment %} come back to fix {% endcomment %}
+                  Japanese</div>
+                      <div class="col-6"><i class="fas fa-dollar-sign">
+
+                      </i>{{listing.price | intcomma}}</div>
             </div>
             <div class="row py-2 text-secondary">
-                <div class="col-6"><i class="fas fa-calendar-alt"></i> Reservations</div>
-                <div class="col-6"><i class="fas fa-star"></i> Cozy Ambiance</div>
+                <div class="col-6"><i class="fas fa-calendar-alt">
+
+                </i> {% if listing.accepts_reservations %}Accept{% else %}Walk-in{% endif %}</div>
+                <div class="col-6"><i class="fas fa-star">
+
+                </i> {{listing.ambiance_note}}</div>
             </div> 
             <div class="row py-2 text-secondary">
-                <div class="col-6"><i class="fas fa-wifi"></i> Free Wi-Fi</div>
-                <div class="col-6"><i class="fas fa-motorcycle"></i> Delivery</div>
+                <div class="col-6"><i class="fas fa-wifi">                 
+                </i> {% if listing.has_wifi %}Free Wifi{% else %}Not Ava.{% endif %}</div>
+                <div class="col-6"><i class="fas fa-motorcycle">
+
+                </i> {% if listing.has_delivery %}Delivery{% else %}Not Ava.{% endif %}</div>
             </div>
             <div class="row py-2 text-secondary">
-                <div class="col-6"><i class="fas fa-star"></i> 4.8</div>
-                <div class="col-6"><i class="fas fa-clock"></i> Open Now</div>
+                <div class="col-6"><i class="fas fa-star">
+
+                </i> {{listing.rating}}</div>
+                <div class="col-6"><i class="fas fa-clock">
+
+                </i> {% if current_time >= listing.opening_hours %}Open{% else %}Closed{% endif %}</div>
             </div>
-            {% comment %}  {% endcomment %}
+            {% comment %} listing {% endcomment %}
             <a href="listing.html" class="btn btn-danger btn-block mt-3">View Details</a>
             </div>
         </div>
         </div>
-        <!-- Listing 2 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card listing-preview">
-                <img src="assets/img/homes/home-2.jpg" class="card-img-top" alt="restaurant" />
-                <div class="card-img-overlay">
-                    <h2>
-                    <span class="badge badge-danger text-white"
-                        >$Late Night Discount</span>
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="listing-heading text-center">
-                    <h4 class="text-danger">Bella Pasta</h4>
-                    <span class="badge badge-cuisine">Italian</span>
-                    <p class="text-muted"><i class="fas fa-map-marker-alt"></i> Central District</p>
-                    </div>
-                    <hr />
-                    <div class="row py-2 text-secondary">
-                    <div class="col-6"><i class="fas fa-utensils"></i> Italian</div>
-                    <div class="col-6"><i class="fas fa-dollar-sign"></i>1000/person</div>
-                    </div>
-                    <div class="row py-2 text-secondary">
-                    <div class="col-6"><i class="fas fa-calendar-alt"></i> Reservations</div>
-                    <div class="col-6"><i class="fas fa-star"></i> Relaxing</div>
-                    </div> 
-                    <div class="row py-2 text-secondary">
-                        <div class="col-6"><i class="fas fa-wifi"></i> Free Wi-Fi</div>
-                        <div class="col-6"><i class="fas fa-motorcycle"></i> Delivery</div>
-                    </div>
-                    <div class="row py-2 text-secondary">
-                    <div class="col-6"><i class="fas fa-star"></i> 4.8</div>
-                    <div class="col-6"><i class="fas fa-clock"></i> Open Now</div>
-                    </div>
-                    {% comment %}  {% endcomment %}
-                    <a href="listing.html" class="btn btn-danger btn-block mt-3">View Details</a>
-                </div>
-            </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <h2>No Resturant on the list !</h2>
         </div>
-        <!-- Listing 3 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card listing-preview">
-                <img src="assets/img/homes/home-3.jpg" class="card-img-top" alt="restaurant" />
-                <div class="card-img-overlay">
-                    <h2>
-                    <span class="badge badge-danger text-white"
-                        >$90% Off</span>
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="listing-heading text-center">
-                    <h4 class="text-danger">Night Owl</h4>
-                    <span class="badge badge-cuisine">Street Food</span>
-                    <p class="text-muted"><i class="fas fa-map-marker-alt"></i> Tsim Sha Tsui</p>
-                    </div>
-                    <hr />
-                    <div class="row py-2 text-secondary">
-                    <div class="col-6"><i class="fas fa-utensils"></i> Southern</div>
-                    <div class="col-6"><i class="fas fa-dollar-sign"></i>200/person</div>
-                    </div>
-                    <div class="row py-2 text-secondary">
-                    <div class="col-6"><i class="fas fa-calendar-alt"></i> Reservations</div>
-                    <div class="col-6"><i class="fas fa-star"></i> Relaxing</div>
-                    </div> 
-                    <div class="row py-2 text-secondary">
-                        <div class="col-6"><i class="fas fa-wifi"></i> Free Wi-Fi</div>
-                        <div class="col-6"><i class="fas fa-motorcycle"></i> Delivery</div>
-                    </div>
-                    <div class="row py-2 text-secondary">
-                    <div class="col-6"><i class="fas fa-star"></i> 4.5</div>
-                    <div class="col-6"><i class="fas fa-clock"></i> Open Now</div>
-                    </div>
-                    {% comment %}  {% endcomment %}
-                    <a href="listing.html" class="btn btn-danger btn-block mt-3">View Details</a>
-                </div>
-            </div>
-        </div>
-
-          
+        {% endif %}
         </div>
       </div>
     </section>
@@ -221,21 +170,22 @@
           </div>
           <div class="col-md-6">
             <div class="card shadow-sm border-0">
-              <div class="card-body p-4">
+              <class="card-body p-4">
                 <h4 class="text-danger">Popular this week</h4>
                 <p class="text-muted mb-3">Top picks from local diners and food critics.</p>
+                {% if top_rated %}
+                {% for top_list in top_rated %}
                 <div class="d-flex justify-content-between border-bottom py-2">
-                  <span>Ramen Night</span>
-                  <span class="text-danger">4.9</span>
+                  <span>{{top_list.title | title}}</span>
+                  <span class="text-danger">{{top_list.rating}}</span>
                 </div>
+                
+                {% endfor %}
+                {% else %}
                 <div class="d-flex justify-content-between border-bottom py-2">
-                  <span>Garden Bistro</span>
-                  <span class="text-danger">4.8</span>
+                  <span>Give your votes for top rating Restaurant</span>
                 </div>
-                <div class="d-flex justify-content-between py-2">
-                  <span>Street Spice</span>
-                  <span class="text-danger">4.7</span>
-                </div>
+                {% endif %}
               </div>
             </div>
           </div>
