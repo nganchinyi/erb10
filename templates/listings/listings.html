@@ -86,8 +86,7 @@
 
                 </i> {% if current_time >= listing.opening_hours %}Open{% else %}Closed{% endif %}</div>
             </div>
-            {% comment %} listing {% endcomment %}
-            <a href="listing.html" class="btn btn-danger btn-block mt-3">View Details</a>
+            <a href={% url "listings:listing" listing.id %} class="btn btn-danger btn-block mt-3">View Details</a>
             </div>
         </div>
         </div>
