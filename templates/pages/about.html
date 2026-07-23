@@ -62,8 +62,7 @@
       <h2 class="display-4">We Work For Your Taste</h2>
       <h4>From local gems to trending dining spots, we make restaurant discovery simple and enjoyable.</h4>
       <hr />
-      {% comment %}  {% endcomment %}
-      <a href="listings.html" class="btn btn-danger text-white btn-lg">View Featured Restaurants</a>
+      <a href={% url "listings:index" %} class="btn btn-danger text-white btn-lg">View Featured Restaurants</a>
     </section>
     <!-- team -->
     <section id="team" class="py-5">

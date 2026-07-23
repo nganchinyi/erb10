@@ -1,12 +1,13 @@
 from django.db import models
 from chefs.models import Chef
+from .choices import category_choices, district_choices
 
 class Listing(models.Model):
     chef = models.ForeignKey(Chef, on_delete=models.DO_NOTHING)
     title=models.CharField(max_length=200)
     address=models.CharField(max_length=200)
-    district=models.CharField(max_length=50)
-    cuisine_choices=models.CharField(max_length=50) # cuisine_choices
+    district=models.CharField(max_length=50, choices=district_choices.items(),default='')
+    cuisine_choices=models.CharField(max_length=50,choices=category_choices.items(),default='') # cuisine_choices
     description=models.TextField(blank=True)
     specialty=models.IntegerField() # specialty
     room_type=models.CharField(max_length=50)

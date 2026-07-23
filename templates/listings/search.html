@@ -1,1 +1,181 @@
-<h1>listings</h1>
+{% extends "base.html"%}
+{% load humanize %}
+{% load static %}
+{% block content %}
+    <!-- Showcase -->
+    <section id="showcase">
+      <div class="container text-center">
+        <div class="home-search p-5">
+          <div class="overlay p-5">
+            <h1 class="display-4 mb-4">Find the perfect place to eat</h1>
+            <p class="lead">Search by district, cuisine, price, and current availability.</p>
+            <div class="search">
+              <form action="{% url 'listings:search' %}">
+                <div class="form-row">
+                  <div class="col-md-4 mb-3">
+                    <label class="sr-only">Keywords</label>
+                    <input type="text" name="keywords" class="form-control" placeholder="Cuisine, dish, or restaurant" value="{{values.keywords}}"/>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="sr-only">District</label>
+                    <select name="district" class="form-control">
+                      <option {% if not values.district %}selected="true" {% endif %}value="">District (All)</option>
+                      {% for key,value in district_choices.items %}
+                      <option value="{{key}}" {% if values.district == key %} selected="true" {% endif %}>{{value}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="sr-only">Category</label>
+                    <select name="category" class="form-control">
+                        <option {% if not values.category %}selected="true" {% endif %}value="">Category (All)</option>
+                      {% for key,value in category_choices.items %}
+                      <option value="{{key}}" {% if values.category == key %} selected="true" {% endif %}>{{value}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                    <label class="sr-only">Price</label>
+                    <select name="price" class="form-control">
+                      <option {% if not values.price %}selected="true" {% endif %}value="">Price Range</option>
+                      {% for key,value in price_choices.items %}
+                      <option value="{{key}}" {% if values.price == key %} selected="true" {% endif %}>{{value}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="sr-only">Open Now</label>
+                    <select name="open" class="form-control">
+                    <option {% if not values.open %}selected="true" {% endif %}value="">Open Now</option>
+                    <option value="Yes"{% if values.open == "Yes" %}selected="true"{% endif %}>Yes</option>
+                    <option value="No"{% if values.open == "No" %}selected="true"{% endif %}>No</option>                              
+                    </select>
+                  </div>
+                </div>
+                <button class="btn btn-danger btn-block mt-4" type="submit">Search Restaurants</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="listings" class="py-5">
+      <div class="container">
+        <h3 class="text-center mb-4">Search Results</h3>
+        <div class="row">
+    <!-- Listing 1 -->
+          {% if listings %}
+        {% for listing in listings %}
+        <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card listing-preview">   
+            <img src={{listing.photo_main.url}} class="card-img-top" alt="restaurant" />
+            <div class="card-img-overlay">
+            <h2>
+                <span class="badge badge-danger text-white"
+                >
+                {{listing.promo_badge_text | title}}</span>
+                      </h2>
+                    </div>
+                        <div class="card-body">
+                      <div class="listing-heading text-center">
+                    <h4 class="text-danger">{{listing.title | title}}</h4>
+            <span class="badge badge-cuisine">
+              {{listing.cuisine_choices | title}}</span>
+            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> {{listing.district | title}}</p>
+            </div>
+            <hr />
+            <div class="row py-2 text-secondary">
+                <div class="col-6"><i class="fas fa-utensils"></i> 
+                  {% comment %} come back to fix {% endcomment %}
+                  {{listing.cuisine_choices}}</div>
+                      <div class="col-6"><i class="fas fa-dollar-sign">
+
+                      </i>{{listing.price | intcomma}}</div>
+            </div>
+            <div class="row py-2 text-secondary">
+                <div class="col-6"><i class="fas fa-calendar-alt">
+
+                </i> {% if listing.accepts_reservations %}Accept{% else %}Walk-in{% endif %}</div>
+                <div class="col-6"><i class="fas fa-star">
+
+                </i> {{listing.ambiance_note}}</div>
+            </div> 
+            <div class="row py-2 text-secondary">
+                <div class="col-6"><i class="fas fa-wifi">                 
+                </i> {% if listing.has_wifi %}Free Wifi{% else %}Not Ava.{% endif %}</div>
+                <div class="col-6"><i class="fas fa-motorcycle">
+
+                </i> {% if listing.has_delivery %}Delivery{% else %}Not Ava.{% endif %}</div>
+            </div>
+            <div class="row py-2 text-secondary">
+                <div class="col-6"><i class="fas fa-star">
+
+                </i> {{listing.rating}}</div>
+                <div class="col-6"><i class="fas fa-clock">
+
+                </i> {% if current_time >= listing.opening_hours %}Open{% else %}Closed{% endif %}</div>
+            </div>
+            {% comment %} listing {% endcomment %}
+          <a href={% url "listings:listing" listing.id %} class="btn btn-danger btn-block mt-3">View Details</a>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <h2>No Resturant on the list !</h2>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if listings.has_other_pages %}
+    <div class="row">
+        <div class="col-md-12">
+        <ul class="pagination">
+            
+            {% if listings.has_previous %}
+                <li class="page-item">
+            <a class="page-link" href="?page={{listings.previous_page_munber}}">&laquo;</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo;</a>
+            </li>
+            {% endif %}
+            {% for i in listings.paginator.page_range %}
+            {% if i == listings.number %}
+            <li class="page-item active">
+            <a class="page-link">{{i}}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{i}}">{{i}}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if listings.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{listings.previous_page_munber}}">&raquo;</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#">&raquo;</a>
+            </li>
+            {% endif %}
+<div class="row">
+        <div class="col-md-12">
+        <ul class="pagination">
+                </ul>
+            </div>
+        </div>       
+        {% endif %}
+
+
+       
+      </div>
+    </section>
+
+{% endblock %}
